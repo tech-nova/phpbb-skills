@@ -180,7 +180,7 @@ write / bulk-transform*.
   increment`; `cron:list|run`; `db:migrate|revert|list`; `dev:migration-tips`;
   `extension:enable|disable|purge|show`; `fixup:fix-left-right-ids|
   update-hashes`; `reparser:list|reparse`; `thumbnail:generate|delete|recreate`;
-  `update:check`; `user:add|delete|activate|reclean`.
+  `update:check`; `user:add|delete|delete_id|activate|reclean`.
 - `references/operations.md` — install and update, `config.php`, cache and
   purging, cron modes, ACP permissions (roles, groups, forum permissions),
   search backends and reindexing, attachments and thumbnails, debug mode, the

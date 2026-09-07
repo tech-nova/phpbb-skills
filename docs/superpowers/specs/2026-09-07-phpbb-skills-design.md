@@ -80,7 +80,9 @@ Each skill states it explicitly: **never recall an event name, method signature
 or column name from memory — read it in the tree.** Authoritative sources, cited
 by path:
 
-- `docs/events.md` — 3645 lines, 404 template events + 501 PHP events
+- `docs/events.md` — 3645 lines, 526 **template** events only. PHP `core.*`
+  events are NOT in this file: the ~518 of them are documented in `@event`
+  docblocks directly above each `trigger_event()` call site in the source.
 - `install/schemas/schema.json` — 69 tables, canonical column definitions
 - `ext/phpbb/viglink/` — a complete extension shipped with core (ext.php,
   config/services.yml, config/cron.yml, event listeners, 5 migrations,
@@ -152,8 +154,9 @@ write / bulk-transform*.
   `styles/`, `acp/`, `controller/`, `cron/`.
 - `references/events.md` — subscribing to PHP events, reading and writing
   `$event['var']`, the `vars` compact/extract mechanism, adding template events
-  from an extension, and how to find the right event without loading all of
-  `docs/events.md` (use `scripts/find-event.sh`).
+  from an extension, and where each catalogue lives — template events in
+  `docs/events.md`, PHP events in `@event` docblocks in the source — using
+  `scripts/find-event.sh` rather than loading either wholesale.
 - `references/migrations.md` — `depends_on`, `effectively_installed`,
   `update_schema` / `revert_schema`, `update_data` / `revert_data`, and the
   common data operations: config values, ACP modules, permissions.
@@ -195,10 +198,12 @@ tree instead of loaded wholesale into context.
 - `phpbb-root.sh` — walks up from a given directory (default: cwd) to find a
   phpBB root, prints its path, `PHPBB_VERSION`, and the table prefix from
   `config.php` when present. Falls back to reporting the reference tree.
-- `find-event.sh <pattern>` — searches `docs/events.md` for matching event
-  names and prints each one's location, version and purpose, plus the real
-  occurrences (`{% EVENT %}` in templates, `trigger_event` in PHP with its
-  `vars`). Avoids loading a 99 KB file.
+- `find-event.sh <pattern>` — searches both event catalogues, because they live
+  in different places: template events in `docs/events.md` (name, `Location:` /
+  `Locations:`, `Since:`, `Purpose:`) and PHP events in the source, where each
+  `@event core.*` docblock carries its `@var` list, `@since` and `@changed`
+  lines. Prints matching entries from both. Avoids loading a 99 KB file or
+  grepping the whole tree by hand.
 - `table-schema.py <table>` — prints columns, types, keys and auto-increment
   for one table from `install/schemas/schema.json`. Accepts names with or
   without the `phpbb_` prefix.

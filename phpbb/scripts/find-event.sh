@@ -31,14 +31,14 @@ if [ -n "$found" ]; then printf '%s\n' "$found"; else echo "(no matches)"; echo;
 
 echo "## PHP events   (source: @event docblocks in the tree)"
 echo
-names=$(grep -rho "@event core\.[a-z_0-9]*" --include=*.php "$root" 2>/dev/null \
-	| grep -v "/vendor/" | sed 's/@event //' | sort -u | grep -- "$pattern")
+names=$(grep -rho "@event core\.[a-z_0-9]*" --include='*.php' --exclude-dir=vendor "$root" 2>/dev/null \
+	| sed 's/@event //' | sort -u | grep -- "$pattern")
 if [ -z "$names" ]; then
 	echo "(no matches)"
 	exit 0
 fi
 for name in $names; do
-	file=$(grep -rl "@event $name\$" --include=*.php "$root" 2>/dev/null | grep -v "/vendor/" | head -1)
+	file=$(grep -rl "@event $name\$" --include='*.php' --exclude-dir=vendor "$root" 2>/dev/null | head -1)
 	[ -n "$file" ] || continue
 	line=$(grep -n "@event $name\$" "$file" | head -1 | cut -d: -f1)
 	echo "### $name"

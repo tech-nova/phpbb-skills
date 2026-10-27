@@ -54,6 +54,12 @@ cannot read, which breaks the board in a way that looks unrelated.
 
 ## Destructive commands
 
+Obtain explicit user authorization for the target board, operation and scope
+before purging extension data, reverting migrations, deleting users or posts,
+or running a reparse that writes stored content. A general request to diagnose
+or troubleshoot a board does not authorize these operations. Reuse existing
+explicit authorization when it covers the same target, operation and scope.
+
 These are not reversible. Back up the database first:
 
 | Command | Destroys |

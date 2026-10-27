@@ -8,13 +8,19 @@ description: Use when building or modifying a phpBB 3.3 extension in ext/ - comp
 An extension is the **only** supported way to change forum behaviour. Patching
 core is reverted by the next update and breaks the updater.
 
-## Read the shipped example first
+## Start with the official skeleton and working examples
 
-`ext/phpbb/viglink/` ships with core and is a complete, real extension:
+For a new extension, use [phpBB's official Skeleton Extension](https://github.com/phpbb-extensions/phpbb-ext-skeleton)
+as a starting point. It generates sample starter files and directories for an
+extension package. Inspect the generated files and verify their APIs against
+the target phpBB version before using them.
+
+`ext/phpbb/viglink/`, when present in the target checkout, is a working example:
 `composer.json`, `ext.php`, `config/services.yml` + `cron.yml`, two event
 listeners, five migrations, an ACP module, language files and template events.
-**Read it before writing anything** — it is more reliable than memory, and it
-is guaranteed to be correct for the version you are working against.
+Read the relevant files before implementing similar functionality. For features
+it does not demonstrate, consult feature-specific examples and verify them
+against the target phpBB source rather than assuming compatibility.
 
 ## Layout
 

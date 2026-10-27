@@ -31,8 +31,18 @@ if [ -n "$found" ]; then printf '%s\n' "$found"; else echo "(no matches)"; echo;
 
 echo "## PHP events   (source: @event docblocks in the tree)"
 echo
-names=$(grep -rho "@event core\.[a-z_0-9]*" --include=*.php "$root" 2>/dev/null \
-	| grep -v "/vendor/" | sed 's/@event //' | sort -u | grep -- "$pattern")
+# Keep grep's no-match status from masking errors elsewhere in the pipeline.
+grep_allow_no_matches() {
+	local status=0
+	grep "$@" || status=$?
+	if [ "$status" -gt 1 ]; then
+		return "$status"
+	fi
+	return 0
+}
+
+names=$(grep_allow_no_matches -rho "@event core\.[a-z_0-9]*" --include=*.php "$root" \
+	| grep_allow_no_matches -v "/vendor/" | sed 's/@event //' | sort -u | grep_allow_no_matches -- "$pattern") || exit $?
 if [ -z "$names" ]; then
 	echo "(no matches)"
 	exit 0

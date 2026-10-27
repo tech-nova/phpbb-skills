@@ -34,8 +34,14 @@ prefix=unknown
   `phpbb_` in a query you are writing for a live board.
 
 When no project root is found, the script falls back to the reference tree
-`/src/phpbb/phpBB3` (phpBB 3.3.17). That tree is a **read-only source of
-truth** for looking things up. It is never an edit target.
+`/src/phpbb/phpBB3` (phpBB 3.3.17). That tree is a **read-only reference** and
+never an edit target. Identify findings from it as reference-only; they do not
+establish compatibility with a different project version.
+
+When a project root is available, its detected `PHPBB_VERSION` and source
+files take precedence over the 3.3.17 reference and the examples in these
+skills. Verify APIs, events, schema and CLI commands against that project;
+do not assume the documented counts apply to every 3.3.x release.
 
 ## 2. The rule: verify, do not recall
 

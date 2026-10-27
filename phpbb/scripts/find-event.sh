@@ -42,7 +42,7 @@ for name in $names; do
 	[ -n "$file" ] || continue
 	line=$(grep -n "@event $name\$" "$file" | head -1 | cut -d: -f1)
 	echo "### $name"
-	echo "File: ${file#$root/}:$line"
+	echo "File: ${file#"$root"/}:$line"
 	# print the docblock (walk back to /**) and the call site that follows
 	awk -v ln="$line" '
 		NR <= ln && /\/\*\*/ { start = NR }

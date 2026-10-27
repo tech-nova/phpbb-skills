@@ -38,9 +38,11 @@ if [ -z "$names" ]; then
 	exit 0
 fi
 for name in $names; do
-	file=$(grep -rl "@event $name\$" --include=*.php "$root" 2>/dev/null | grep -v "/vendor/" | head -1)
+	# Match literal dots in the discovered name, preserving the end anchor.
+	event_pattern="@event ${name//./[.]}\$"
+	file=$(grep -rl "$event_pattern" --include=*.php "$root" 2>/dev/null | grep -v "/vendor/" | head -1)
 	[ -n "$file" ] || continue
-	line=$(grep -n "@event $name\$" "$file" | head -1 | cut -d: -f1)
+	line=$(grep -n "$event_pattern" "$file" | head -1 | cut -d: -f1)
 	echo "### $name"
 	echo "File: ${file#$root/}:$line"
 	# print the docblock (walk back to /**) and the call site that follows

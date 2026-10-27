@@ -26,7 +26,7 @@ found=$(awk -v pat="$pattern" '
 	show && /^$/ { show=0; print ""; next }
 	show { print }
 	{ prev = $0 }
-' "$root/docs/events.md")
+' "$root/docs/events.md") || exit $?
 if [ -n "$found" ]; then printf '%s\n' "$found"; else echo "(no matches)"; echo; fi
 
 echo "## PHP events   (source: @event docblocks in the tree)"

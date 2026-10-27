@@ -32,6 +32,11 @@ one, so they work from anywhere inside a forum.
 | `find-event.sh <pattern> [root]` | matching events from **both** catalogues: template events from `docs/events.md`, PHP events from the `@event` docblocks in the source, with their `@var` contract and call site |
 | `table-schema.py <table> [--root PATH]` | one table's columns, types, defaults, primary key and indexes, from `install/schemas/schema.json`. Name works with or without the `phpbb_` prefix. |
 
+`table-schema.py` reads the canonical schema, whose table names use `phpbb_`,
+rather than the installed database. For a board using a custom prefix, pass
+`users` or `phpbb_users`; installed names such as `forum_users` are not
+normalised using `config.php`.
+
 `find-event.sh` exists because the two event catalogues live in different
 places — `docs/events.md` holds **template events only**, and searching it for a
 `core.*` name finds nothing. That confusion is the most common phpBB

@@ -2,7 +2,9 @@
 """Print one phpBB table's definition from install/schemas/schema.json.
 
 Usage: table-schema.py <table> [--root PATH]
-The table name may be given with or without the phpbb_ prefix.
+The table name may be given with or without the canonical phpbb_ prefix.
+This reads schema.json, not the installed database or config.php. For a board
+using a custom prefix, pass the unprefixed table name (for example, users).
 """
 import argparse
 import json

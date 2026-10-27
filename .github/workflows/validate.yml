@@ -1,0 +1,51 @@
+name: Validate helper scripts
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  scripts:
+    name: Helper scripts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check Bash syntax and lint
+        run: |
+          shopt -s nullglob
+          scripts=(phpbb/scripts/*.sh tests/*.sh)
+          for script in "${scripts[@]}"; do
+            bash -n "$script"
+          done
+          shellcheck --severity=warning "${scripts[@]}"
+
+      - name: Check Python syntax
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          for path in Path("phpbb/scripts").glob("*.py"):
+              compile(path.read_bytes(), str(path), "exec")
+              print(f"Syntax OK: {path}")
+          PY
+
+      - name: Run regression scripts
+        run: |
+          shopt -s nullglob
+          regression_scripts=(tests/*.sh)
+          if (( ${#regression_scripts[@]} == 0 )); then
+            echo "No regression scripts are present in this checkout."
+          fi
+          for script in "${regression_scripts[@]}"; do
+            echo "Running $script"
+            bash "$script"
+          done
